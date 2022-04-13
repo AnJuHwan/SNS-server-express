@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadPost = exports.getDetailPost = exports.getPost = void 0;
+exports.deletePost = exports.editPost = exports.uploadPost = exports.getDetailPost = exports.getPost = void 0;
 const counterModel_1 = __importDefault(require("../Model/counterModel"));
 const postModel_1 = __importDefault(require("../Model/postModel"));
 // 모든 포스트 가져오기
@@ -28,7 +28,10 @@ const getPost = (req, res) => {
             postItem: item,
         });
     })
-        .catch((error) => res.status(400).json({ success: false, message: 'server error' }));
+        .catch((error) => {
+        console.log(error);
+        res.status(500).json({ success: false, message: 'server error' });
+    });
 };
 exports.getPost = getPost;
 // 특정 상세 포스트 가져오기
@@ -40,7 +43,7 @@ const getDetailPost = (req, res) => {
     })
         .catch((error) => {
         console.log(error);
-        res.status(200).json({ success: false, message: 'server error' });
+        res.status(500).json({ success: false, message: 'server error' });
     });
 };
 exports.getDetailPost = getDetailPost;
@@ -66,7 +69,54 @@ const uploadPost = (req, res) => {
     })
         .catch((error) => {
         console.log(error);
-        res.status(400).json({ success: false, message: 'server error' });
+        res.status(500).json({ success: false, message: 'server error' });
     });
 };
 exports.uploadPost = uploadPost;
+// 포스트 수정하기
+const editPost = (req, res) => {
+    postModel_1.default.findOneAndUpdate({ _id: req.body.id }, {
+        $set: {
+            title: req.body.title,
+            content: req.body.content,
+        },
+    }, { new: true })
+        .exec()
+        .then((item) => {
+        res.status(200).json({ success: true, postItem: item });
+    })
+        .catch((error) => {
+        console.log(error);
+        res.status(500).json({ success: false, message: 'server error' });
+    });
+    /*
+    Post.findOneAndUpdate({ _id: req.body.id })
+      .exec()
+      .then((item) => {
+        item.title = req.body.title;
+        item.content = req.body.content;
+        console.log('item: ' + item);
+        item.save().then(() => {
+          res.status(200).json({ success: true, postItem: item });
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({ success: false, message: 'server error' });
+      });
+    */
+};
+exports.editPost = editPost;
+// 포스트 삭제하기
+const deletePost = (req, res) => {
+    postModel_1.default.findOneAndDelete({ _id: req.params.id })
+        .exec()
+        .then((item) => {
+        res.status(200).json({ success: true, postItem: item });
+    })
+        .catch((error) => {
+        console.log(error);
+        res.status(500).json({ success: false, message: 'server error' });
+    });
+};
+exports.deletePost = deletePost;

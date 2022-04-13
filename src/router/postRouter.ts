@@ -1,5 +1,11 @@
 import express from 'express';
-import { getDetailPost, getPost, uploadPost } from '../Controller/postController';
+import {
+  deletePost,
+  editPost,
+  getDetailPost,
+  getPost,
+  uploadPost,
+} from '../Controller/postController';
 
 const router = express.Router();
 
@@ -12,12 +18,8 @@ router.get('/:id', getDetailPost);
 // 포스트 업로드
 router.post('/upload', uploadPost);
 
-router.put('/:id', (req, res) => {
-  res.status(201).send('PUT: /posts');
-});
+router.put('/edit', editPost);
 
-router.delete('/:id', (req, res) => {
-  res.status(201).send('DELETE: /posts');
-});
+router.delete('/:id', deletePost);
 
 export default router;

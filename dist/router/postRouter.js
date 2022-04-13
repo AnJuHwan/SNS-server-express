@@ -12,10 +12,6 @@ router.get('/', postController_1.getPost);
 router.get('/:id', postController_1.getDetailPost);
 // 포스트 업로드
 router.post('/upload', postController_1.uploadPost);
-router.put('/:id', (req, res) => {
-    res.status(201).send('PUT: /posts');
-});
-router.delete('/:id', (req, res) => {
-    res.status(201).send('DELETE: /posts');
-});
+router.put('/edit', postController_1.editPost);
+router.delete('/:id', postController_1.deletePost);
 exports.default = router;

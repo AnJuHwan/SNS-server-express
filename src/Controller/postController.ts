@@ -24,7 +24,10 @@ export const getPost = (req: Request, res: Response) => {
         postItem: item,
       });
     })
-    .catch((error) => res.status(400).json({ success: false, message: 'server error' }));
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ success: false, message: 'server error' });
+    });
 };
 
 // 특정 상세 포스트 가져오기
@@ -36,7 +39,7 @@ export const getDetailPost = (req: Request, res: Response) => {
     })
     .catch((error) => {
       console.log(error);
-      res.status(200).json({ success: false, message: 'server error' });
+      res.status(500).json({ success: false, message: 'server error' });
     });
 };
 
@@ -63,6 +66,58 @@ export const uploadPost = (req: Request, res: Response) => {
     })
     .catch((error) => {
       console.log(error);
-      res.status(400).json({ success: false, message: 'server error' });
+      res.status(500).json({ success: false, message: 'server error' });
+    });
+};
+
+// 포스트 수정하기
+export const editPost = (req: Request, res: Response) => {
+  Post.findOneAndUpdate(
+    { _id: req.body.id },
+    {
+      $set: {
+        title: req.body.title,
+        content: req.body.content,
+      },
+    },
+    { new: true },
+  )
+    .exec()
+    .then((item) => {
+      res.status(200).json({ success: true, postItem: item });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ success: false, message: 'server error' });
+    });
+
+  /*
+  Post.findOneAndUpdate({ _id: req.body.id })
+    .exec()
+    .then((item) => {
+      item.title = req.body.title;
+      item.content = req.body.content;
+      console.log('item: ' + item);
+      item.save().then(() => {
+        res.status(200).json({ success: true, postItem: item });
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ success: false, message: 'server error' });
+    });
+  */
+};
+
+// 포스트 삭제하기
+export const deletePost = (req: Request, res: Response) => {
+  Post.findOneAndDelete({ _id: req.params.id })
+    .exec()
+    .then((item) => {
+      res.status(200).json({ success: true, postItem: item });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ success: false, message: 'server error' });
     });
 };
