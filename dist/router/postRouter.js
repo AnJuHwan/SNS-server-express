@@ -12,6 +12,8 @@ router.get('/', postController_1.getPost);
 router.get('/:id', postController_1.getDetailPost);
 // 포스트 업로드
 router.post('/upload', postController_1.uploadPost);
+// 포스트 수정
 router.put('/edit', postController_1.editPost);
+// 포스트 삭제
 router.delete('/:id', postController_1.deletePost);
 exports.default = router;

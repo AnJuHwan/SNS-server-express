@@ -4,6 +4,7 @@ import userRouter from './router/userRouter';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import Mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
 import Post from './Model/postModel';
 import Counter from './Model/counterModel';
 
@@ -21,19 +22,19 @@ Mongoose.connect(`${process.env.MONGODB_URI}`)
 
 app.use(express.json());
 app.use(cors({ origin: ['*'] }));
+app.use(cookieParser());
 
 app.use('/post', postRouter);
 app.use('/users', userRouter);
 app.use(express.static('public')); // public폴더 안에있는 모든 리소스를 가져갈 수 있음
 
-// app.post('/', (req: Request, res: Response, next: NextFunction) => {
-//   console.log(req.body);
-//   res.status(200).json({ success: true });
+// app.get('/getCookie', (req: Request, res: Response) => {
+//   res.cookie('cookie', 'test11').status(200).json({ postData: [] });
 // });
-
-// app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-//   console.error(error);
-//   res.status(500).json({ messgae: 'Server Error...' });
+// app.get('/checkCookie', (req: Request, res: Response) => {
+//   console.log(req.cookies);
+//   console.log(req.headers.cookie);
+//   res.status(200).json({ postData: [] });
 // });
 
 app.get('*', (req, res) => {
