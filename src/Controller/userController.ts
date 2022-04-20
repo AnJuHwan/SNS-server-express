@@ -21,7 +21,6 @@ export const signupEmailCheck = (req: Request, res: Response) => {
   User.findOne({ email: req.body.email })
     .exec()
     .then((item) => {
-      console.log(item);
       if (item) {
         return res.status(400).json({ success: false, messgae: '이미 존재하는 이메일 입니다.' });
       }
@@ -53,26 +52,33 @@ export const signup = async (req: Request, res: Response) => {
     });
 };
 
-export const login = (req: Request, res: Response, next: NextFunction) => {
+export const login = async (req: Request, res: Response, next: NextFunction) => {
   User.findOne({ email: req.body.email })
     .exec()
     .then((item) => {
       if (!item) {
-        return res
-          .status(400)
-          .json({ success: false, message: '1아이디,비밀번호를 확인해주세요.' });
+        return res.status(401).json({ success: false, message: '이메일을 확인해주세요.' });
+      } else {
+        bcrypt.compare(req.body.password, item.password).then(function (result) {
+          if (!result) {
+            return res.status(401).json({ success: false, message: '비밀번호를 확인해주세요.' });
+          }
+          res.status(200).json({ success: true, user: item });
+        });
       }
-      next();
     })
-    .catch((err) => res.status(500).json({ success: false, message: 'server Error' }));
-  // User.findOne({ password: req.body.password })
-  //   .exec()
-  //   .then((item) => {
-  //     console.log(item);
-  //     if (!item) {
-  //       return res
-  //         .status(400)
-  //         .json({ success: false, message: '2아이디,비밀번호를 확인해주세요.' });
-  //     }
-  //   });
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ success: false, message: 'server Error' });
+    });
 };
+
+/* 
+ bcrypt.compare(req.body.password, item.password).then(function (result) {
+        if (!result) {
+          return res
+            .status(401)
+            .json({ success: false, message: '아이디,비밀번호를 확인해주세요2.' });
+        }
+      });
+*/
