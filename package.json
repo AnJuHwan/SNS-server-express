@@ -6,7 +6,10 @@
   "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"tsc -w\" \"nodemon dist/app\""
+    "start": "node dist/app.js"
+  },
+  "engines": {
+    "node": "16.13.1"
   },
   "keywords": [],
   "author": "",

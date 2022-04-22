@@ -12,7 +12,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-const port = 5000;
+const port = process.env.PORT || 5000;
 mongoose_1.default.connect(`${process.env.MONGODB_URI}`)
     .then(() => {
     app.listen(port);
