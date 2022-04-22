@@ -50,6 +50,7 @@ exports.getDetailPost = getDetailPost;
 // 포스트 업로드
 const uploadPost = (req, res) => {
     let temp = {
+        userId: req.body.userId,
         title: req.body.title,
         content: req.body.content,
         postNum: 0,

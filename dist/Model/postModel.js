@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const { Schema } = mongoose_1.default;
 const postSchema = new Schema({
+    userId: String,
     title: String,
     content: String,
     postNum: Number,
