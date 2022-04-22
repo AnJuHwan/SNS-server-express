@@ -46,6 +46,7 @@ export const getDetailPost = (req: Request, res: Response) => {
 // 포스트 업로드
 export const uploadPost = (req: Request, res: Response) => {
   let temp = {
+    userId: req.body.userId,
     title: req.body.title,
     content: req.body.content,
     postNum: 0,
