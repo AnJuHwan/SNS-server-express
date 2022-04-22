@@ -33,6 +33,6 @@ app.use(express_1.default.static('public')); // public폴더 안에있는 모든
 //   console.log(req.headers.cookie);
 //   res.status(200).json({ postData: [] });
 // });
-app.get('*', (req, res) => {
-    res.status(404).json({ message: '찾을 수 없는 페이지입니다!' });
-});
+// app.get('*', (req, res) => {
+//   res.status(404).json({ message: '찾을 수 없는 페이지입니다!' });
+// });

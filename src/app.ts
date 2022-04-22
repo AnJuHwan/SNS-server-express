@@ -37,6 +37,6 @@ app.use(express.static('public')); // public폴더 안에있는 모든 리소스
 //   res.status(200).json({ postData: [] });
 // });
 
-app.get('*', (req, res) => {
-  res.status(404).json({ message: '찾을 수 없는 페이지입니다!' });
-});
+// app.get('*', (req, res) => {
+//   res.status(404).json({ message: '찾을 수 없는 페이지입니다!' });
+// });
