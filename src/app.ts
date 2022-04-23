@@ -21,7 +21,7 @@ Mongoose.connect(`${process.env.MONGODB_URI}`)
   .catch((error) => console.log(error));
 
 app.use(express.json());
-app.use(cors({ origin: ['*'], credentials: true }));
+app.use(cors({ origin: '*', credentials: true }));
 app.use(cookieParser());
 
 app.use('/post', postRouter);
