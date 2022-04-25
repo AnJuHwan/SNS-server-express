@@ -73,6 +73,14 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     });
 };
 
+export const deleteUser = (req: Request, res: Response, next: NextFunction) => {
+  User.findOneAndDelete({ _id: req.body.id })
+    .exec()
+    .then((item) => {
+      console.log(item);
+    });
+};
+
 /* 
  bcrypt.compare(req.body.password, item.password).then(function (result) {
         if (!result) {

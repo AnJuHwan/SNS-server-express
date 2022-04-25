@@ -1,5 +1,5 @@
 import express from 'express';
-import { login, signNickNameCheck, signup, signupEmailCheck } from '../Controller/userController';
+import { deleteUser, login, signNickNameCheck, signup, signupEmailCheck } from '../Controller/userController';
 
 const router = express.Router();
 
@@ -11,5 +11,7 @@ router.post('/signup/emailCheck', signupEmailCheck);
 router.post('/signup', signup);
 // 로그인
 router.post('/login', login);
+
+router.post('/delete',deleteUser)
 
 export default router;
