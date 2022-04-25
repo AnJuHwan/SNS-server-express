@@ -12,9 +12,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.signup = exports.signupEmailCheck = exports.signNickNameCheck = void 0;
+exports.deleteUser = exports.login = exports.signup = exports.signupEmailCheck = exports.signNickNameCheck = exports.allUser = void 0;
 const userModel_1 = __importDefault(require("../Model/userModel"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const allUser = (req, res) => {
+    userModel_1.default.find()
+        .exec()
+        .then((item) => {
+        res.status(200).json({ success: true, user: item });
+    })
+        .catch((err) => {
+        res.status(500).json({ success: false, message: 'server Error' });
+    });
+};
+exports.allUser = allUser;
 const signNickNameCheck = (req, res) => {
     userModel_1.default.findOne({ nickName: req.body.nickName })
         .exec()
@@ -87,6 +98,24 @@ const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* ()
     });
 });
 exports.login = login;
+const deleteUser = (req, res, next) => {
+    userModel_1.default.findOneAndDelete({ _id: req.body.id })
+        .exec()
+        .then((item) => {
+        if (!item) {
+            return res
+                .status(400)
+                .json({ success: false, message: '가입되어있지 않은 아이디 입니다..' });
+        }
+        else {
+            return res.status(200).json({ success: true, user: item });
+        }
+    })
+        .catch((err) => {
+        res.status(400).json({ success: false, message: '탈퇴 실패하였습니다.', err });
+    });
+};
+exports.deleteUser = deleteUser;
 /*
  bcrypt.compare(req.body.password, item.password).then(function (result) {
         if (!result) {

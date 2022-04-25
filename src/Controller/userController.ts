@@ -2,6 +2,17 @@ import { NextFunction, Request, Response } from 'express';
 import User from '../Model/userModel';
 import bcrypt from 'bcrypt';
 
+export const allUser = (req: Request, res: Response) => {
+  User.find()
+    .exec()
+    .then((item) => {
+      res.status(200).json({ success: true, user: item });
+    })
+    .catch((err) => {
+      res.status(500).json({ success: false, message: 'server Error' });
+    });
+};
+
 export const signNickNameCheck = (req: Request, res: Response) => {
   User.findOne({ nickName: req.body.nickName })
     .exec()
@@ -77,7 +88,16 @@ export const deleteUser = (req: Request, res: Response, next: NextFunction) => {
   User.findOneAndDelete({ _id: req.body.id })
     .exec()
     .then((item) => {
-      console.log(item);
+      if (!item) {
+        return res
+          .status(400)
+          .json({ success: false, message: '가입되어있지 않은 아이디 입니다..' });
+      } else {
+        return res.status(200).json({ success: true, user: item });
+      }
+    })
+    .catch((err) => {
+      res.status(400).json({ success: false, message: '탈퇴 실패하였습니다.', err });
     });
 };
 
