@@ -7,6 +7,7 @@ import Mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import Post from './Model/postModel';
 import Counter from './Model/counterModel';
+import comentRouter from './router/commentRouter';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(cookieParser());
 
 app.use('/post', postRouter);
 app.use('/users', userRouter);
+app.use('/comment', comentRouter);
 app.use(express.static('public')); // public폴더 안에있는 모든 리소스를 가져갈 수 있음
 
 // app.get('/getCookie', (req: Request, res: Response) => {
