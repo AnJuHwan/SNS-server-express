@@ -1,5 +1,5 @@
 import express from 'express';
-import { getComment } from '../Controller/commentController';
+import { createComment, getComment } from '../Controller/commentController';
 
 const router = express.Router();
 
@@ -7,6 +7,6 @@ const router = express.Router();
 router.get('/', getComment);
 
 // 댓글 쓰기
-router.post('/create');
+router.post('/create', createComment);
 
 export default router;
