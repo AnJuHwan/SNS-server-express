@@ -1,4 +1,4 @@
-import { allUser } from './../Controller/userController';
+import { allUser, myUser } from './../Controller/userController';
 import express from 'express';
 import {
   deleteUser,
@@ -9,6 +9,8 @@ import {
 } from '../Controller/userController';
 
 const router = express.Router();
+
+
 
 // 가입되어있는 유저 모두 조회
 router.get('/', allUser);
@@ -22,5 +24,7 @@ router.post('/signup', signup);
 router.post('/login', login);
 // 회원탈퇴
 router.post('/delete', deleteUser);
+// 내 유저 정보 불러오기
+router.get('/my',myUser)
 
 export default router;

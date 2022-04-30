@@ -5,16 +5,7 @@ import http from 'http';
 import express from 'express';
 import { Server } from 'socket.io';
 
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: '*',
-  },
-});
-io.on('connection', (socket) => {
-  console.log('Socket client conneted');
-});
+
 
 // 댓글 가져오기
 export const getComment = (req: Request, res: Response, next: NextFunction) => {

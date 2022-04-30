@@ -19,4 +19,6 @@ router.post('/signup', userController_2.signup);
 router.post('/login', userController_2.login);
 // 회원탈퇴
 router.post('/delete', userController_2.deleteUser);
+// 내 유저 정보 불러오기
+router.get('/my', userController_1.myUser);
 exports.default = router;

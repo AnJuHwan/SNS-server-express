@@ -11,13 +11,24 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const commentRouter_1 = __importDefault(require("./router/commentRouter"));
+const socket_io_1 = require("socket.io");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 5000;
+// const server = http.createServer(app);
 mongoose_1.default.connect(`${process.env.MONGODB_URI}`)
     .then(() => {
-    app.listen(port);
+    const server = app.listen(port);
+    const io = new socket_io_1.Server(server, {
+        cors: {
+            origin: '*',
+        },
+    });
     console.log('mongoDB connect!!');
+    io.on('connection', (socket) => {
+        socket.emit('test', { message: 'hello!' });
+        console.log('연결되었습니다.!');
+    });
 })
     .catch((error) => console.log(error));
 app.use(express_1.default.json());
@@ -27,14 +38,9 @@ app.use('/post', postRouter_1.default);
 app.use('/users', userRouter_1.default);
 app.use('/comment', commentRouter_1.default);
 app.use(express_1.default.static('public')); // public폴더 안에있는 모든 리소스를 가져갈 수 있음
-// app.get('/getCookie', (req: Request, res: Response) => {
-//   res.cookie('cookie', 'test11').status(200).json({ postData: [] });
-// });
-// app.get('/checkCookie', (req: Request, res: Response) => {
-//   console.log(req.cookies);
-//   console.log(req.headers.cookie);
-//   res.status(200).json({ postData: [] });
-// });
+app.get('/', (req, res) => {
+    return res.status(200).json({ message: '서버연결!' });
+});
 // app.get('*', (req, res) => {
 //   res.status(404).json({ message: '찾을 수 없는 페이지입니다!' });
 // });

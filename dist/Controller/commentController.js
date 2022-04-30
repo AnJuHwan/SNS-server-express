@@ -6,19 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createComment = exports.getComment = void 0;
 const commentModel_1 = __importDefault(require("../Model/commentModel"));
 const postModel_1 = __importDefault(require("../Model/postModel"));
-const http_1 = __importDefault(require("http"));
-const express_1 = __importDefault(require("express"));
-const socket_io_1 = require("socket.io");
-const app = (0, express_1.default)();
-const server = http_1.default.createServer(app);
-const io = new socket_io_1.Server(server, {
-    cors: {
-        origin: '*',
-    },
-});
-io.on('connection', (socket) => {
-    console.log('Socket client conneted');
-});
 // 댓글 가져오기
 const getComment = (req, res, next) => {
     console.log(req.query.postId);

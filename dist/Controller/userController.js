@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.login = exports.signup = exports.signupEmailCheck = exports.signNickNameCheck = exports.allUser = void 0;
+exports.myUser = exports.deleteUser = exports.login = exports.signup = exports.signupEmailCheck = exports.signNickNameCheck = exports.allUser = void 0;
 const userModel_1 = __importDefault(require("../Model/userModel"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const allUser = (req, res) => {
@@ -116,6 +116,22 @@ const deleteUser = (req, res, next) => {
     });
 };
 exports.deleteUser = deleteUser;
+const myUser = (req, res) => {
+    userModel_1.default.findOne({ _id: req.query.id })
+        .exec()
+        .then((user) => {
+        if (!user) {
+            return res.status(400).json({ message: '유저를 찾지 못했습니다.' });
+        }
+        else {
+            return res.status(200).json({ success: true, user });
+        }
+    })
+        .catch((err) => {
+        res.status(500).json({ success: false, message: 'server error' });
+    });
+};
+exports.myUser = myUser;
 /*
  bcrypt.compare(req.body.password, item.password).then(function (result) {
         if (!result) {
