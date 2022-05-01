@@ -15,7 +15,6 @@ const socket_io_1 = require("socket.io");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 5000;
-// const server = http.createServer(app);
 mongoose_1.default.connect(`${process.env.MONGODB_URI}`)
     .then(() => {
     const server = app.listen(port);

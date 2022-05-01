@@ -17,6 +17,7 @@ export const getPost = (req: Request, res: Response) => {
   //     });
   // }
   Post.find()
+    .sort({ updatedAt: -1 })
     .exec()
     .then((item) => {
       res.status(200).json({

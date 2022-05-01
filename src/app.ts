@@ -1,13 +1,10 @@
-import http from 'http';
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import postRouter from './router/postRouter';
 import userRouter from './router/userRouter';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import Mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
-import Post from './Model/postModel';
-import Counter from './Model/counterModel';
 import comentRouter from './router/commentRouter';
 import { Server } from 'socket.io';
 
@@ -15,7 +12,6 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
-// const server = http.createServer(app);
 
 Mongoose.connect(`${process.env.MONGODB_URI}`)
   .then(() => {

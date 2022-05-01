@@ -21,6 +21,7 @@ const getPost = (req, res) => {
     //     });
     // }
     postModel_1.default.find()
+        .sort({ updatedAt: -1 })
         .exec()
         .then((item) => {
         res.status(200).json({
