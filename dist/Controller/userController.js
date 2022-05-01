@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.myUser = exports.deleteUser = exports.login = exports.signup = exports.signupEmailCheck = exports.signNickNameCheck = exports.allUser = void 0;
+exports.updatePassword = exports.updateProfile = exports.updateNickName = exports.myUser = exports.deleteUser = exports.login = exports.signup = exports.signupEmailCheck = exports.signNickNameCheck = exports.allUser = void 0;
 const userModel_1 = __importDefault(require("../Model/userModel"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const allUser = (req, res) => {
@@ -31,9 +31,9 @@ const signNickNameCheck = (req, res) => {
         .exec()
         .then((item) => {
         if (item) {
-            return res.status(400).json({ success: false, messgae: '이미 존재하는 닉네임 입니다.' });
+            return res.status(400).json({ success: false, message: '이미 존재하는 닉네임 입니다.' });
         }
-        res.status(200).json({ succes: true, message: '사용 가능한 닉네임 입니다.' });
+        res.status(200).json({ success: true, message: '사용 가능한 닉네임 입니다.' });
     })
         .catch((error) => {
         res.status(500).json({ success: false, message: 'server Error' });
@@ -46,7 +46,7 @@ const signupEmailCheck = (req, res) => {
         .exec()
         .then((item) => {
         if (item) {
-            return res.status(400).json({ success: false, messgae: '이미 존재하는 이메일 입니다.' });
+            return res.status(400).json({ success: false, message: '이미 존재하는 이메일 입니다.' });
         }
         res.status(200).json({ succes: true, message: '사용 가능한 이메일 입니다.' });
     })
@@ -132,12 +132,64 @@ const myUser = (req, res) => {
     });
 };
 exports.myUser = myUser;
-/*
- bcrypt.compare(req.body.password, item.password).then(function (result) {
-        if (!result) {
-          return res
-            .status(401)
-            .json({ success: false, message: '아이디,비밀번호를 확인해주세요2.' });
+const updateNickName = (req, res) => {
+    userModel_1.default.findOneAndUpdate({ _id: req.body.id }, {
+        $set: {
+            nickName: req.body.nickName,
+        },
+    }, { new: true })
+        .exec()
+        .then((user) => {
+        if (!user) {
+            return res.status(400).json({ message: '유저를 찾지 못했습니다.' });
         }
-      });
-*/
+        else {
+            return res.status(200).json({ success: true, user });
+        }
+    })
+        .catch((err) => {
+        res.status(500).json({ success: false, message: 'server error' });
+    });
+};
+exports.updateNickName = updateNickName;
+const updateProfile = (req, res) => {
+    userModel_1.default.findOneAndUpdate({ _id: req.body.id }, {
+        $set: {
+            profile: req.body.profile,
+        },
+    }, { new: true })
+        .exec()
+        .then((user) => {
+        if (!user) {
+            return res.status(400).json({ message: '유저를 찾지 못했습니다.' });
+        }
+        else {
+            return res.status(200).json({ success: true, user });
+        }
+    })
+        .catch((err) => {
+        res.status(500).json({ success: false, message: 'server error' });
+    });
+};
+exports.updateProfile = updateProfile;
+const updatePassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const hashed = yield bcrypt_1.default.hash(req.body.password, 12);
+    userModel_1.default.findOneAndUpdate({ _id: req.body.id }, {
+        $set: {
+            password: hashed,
+        },
+    }, { new: true })
+        .exec()
+        .then((user) => {
+        if (!user) {
+            return res.status(400).json({ message: '유저를 찾지 못했습니다.' });
+        }
+        else {
+            return res.status(200).json({ success: true, user });
+        }
+    })
+        .catch((err) => {
+        res.status(500).json({ success: false, message: 'server error' });
+    });
+});
+exports.updatePassword = updatePassword;

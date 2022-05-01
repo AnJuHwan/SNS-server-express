@@ -18,9 +18,9 @@ export const signNickNameCheck = (req: Request, res: Response) => {
     .exec()
     .then((item) => {
       if (item) {
-        return res.status(400).json({ success: false, messgae: '이미 존재하는 닉네임 입니다.' });
+        return res.status(400).json({ success: false, message: '이미 존재하는 닉네임 입니다.' });
       }
-      res.status(200).json({ succes: true, message: '사용 가능한 닉네임 입니다.' });
+      res.status(200).json({ success: true, message: '사용 가능한 닉네임 입니다.' });
     })
     .catch((error) => {
       res.status(500).json({ success: false, message: 'server Error' });
@@ -33,7 +33,7 @@ export const signupEmailCheck = (req: Request, res: Response) => {
     .exec()
     .then((item) => {
       if (item) {
-        return res.status(400).json({ success: false, messgae: '이미 존재하는 이메일 입니다.' });
+        return res.status(400).json({ success: false, message: '이미 존재하는 이메일 입니다.' });
       }
       res.status(200).json({ succes: true, message: '사용 가능한 이메일 입니다.' });
     })
@@ -116,12 +116,72 @@ export const myUser = (req: Request, res: Response) => {
     });
 };
 
-/* 
- bcrypt.compare(req.body.password, item.password).then(function (result) {
-        if (!result) {
-          return res
-            .status(401)
-            .json({ success: false, message: '아이디,비밀번호를 확인해주세요2.' });
-        }
-      });
-*/
+export const updateNickName = (req: Request, res: Response) => {
+  User.findOneAndUpdate(
+    { _id: req.body.id },
+    {
+      $set: {
+        nickName: req.body.nickName,
+      },
+    },
+    { new: true },
+  )
+    .exec()
+    .then((user) => {
+      if (!user) {
+        return res.status(400).json({ message: '유저를 찾지 못했습니다.' });
+      } else {
+        return res.status(200).json({ success: true, user });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ success: false, message: 'server error' });
+    });
+};
+
+export const updateProfile = (req: Request, res: Response) => {
+  User.findOneAndUpdate(
+    { _id: req.body.id },
+    {
+      $set: {
+        profile: req.body.profile,
+      },
+    },
+    { new: true },
+  )
+    .exec()
+    .then((user) => {
+      if (!user) {
+        return res.status(400).json({ message: '유저를 찾지 못했습니다.' });
+      } else {
+        return res.status(200).json({ success: true, user });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ success: false, message: 'server error' });
+    });
+};
+
+export const updatePassword = async (req: Request, res: Response) => {
+  const hashed = await bcrypt.hash(req.body.password, 12);
+  User.findOneAndUpdate(
+    { _id: req.body.id },
+    {
+      $set: {
+        password: hashed,
+      },
+    },
+    { new: true },
+  )
+    .exec()
+    .then((user) => {
+      if (!user) {
+        return res.status(400).json({ message: '유저를 찾지 못했습니다.' });
+      } else {
+        return res.status(200).json({ success: true, user });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ success: false, message: 'server error' });
+    });
+};

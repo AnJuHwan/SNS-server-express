@@ -21,4 +21,11 @@ router.post('/login', userController_2.login);
 router.post('/delete', userController_2.deleteUser);
 // 내 유저 정보 불러오기
 router.get('/my', userController_1.myUser);
+// 닉네임 변경
+router.put('/update/nickname', userController_1.updateNickName);
+// 프로필 변경
+router.put('/update/profile', userController_1.updateProfile);
+// 패스워드 변경
+router.put('/update/password', userController_1.updatePassword);
 exports.default = router;
+// 닉네임변경 / 프로필 변경 / 비밀번호 변경

@@ -1,4 +1,10 @@
-import { allUser, myUser } from './../Controller/userController';
+import {
+  allUser,
+  myUser,
+  updateNickName,
+  updatePassword,
+  updateProfile,
+} from './../Controller/userController';
 import express from 'express';
 import {
   deleteUser,
@@ -9,8 +15,6 @@ import {
 } from '../Controller/userController';
 
 const router = express.Router();
-
-
 
 // 가입되어있는 유저 모두 조회
 router.get('/', allUser);
@@ -25,6 +29,14 @@ router.post('/login', login);
 // 회원탈퇴
 router.post('/delete', deleteUser);
 // 내 유저 정보 불러오기
-router.get('/my',myUser)
+router.get('/my', myUser);
+// 닉네임 변경
+router.put('/update/nickname', updateNickName);
+// 프로필 변경
+router.put('/update/profile', updateProfile);
+// 패스워드 변경
+router.put('/update/password', updatePassword);
 
 export default router;
+
+// 닉네임변경 / 프로필 변경 / 비밀번호 변경
